@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAC Address Generator</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <section id="content">
+
+        <h1>MAC Address Generator</h1>
+
+        <!-- Input field for CID and buttons -->
+        <div id="input_field">
+            <input type="text" id="cid-input" placeholder="Enter 128-bit CID">
+            <button id="generate" onclick="generateMAC()">Generate MAC</button>
+            <button id="try-again" style="display: none;" onclick="tryAgain()">Try Again</button>
+        </div>
+
+        <div id="loading-spinner" style="display: none;">
+            <svg width="80" style="margin: 50px;" height="80" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><style>.spinner_ajPY{transform-origin:center;animation:spinner_AtaB .75s infinite linear}@keyframes spinner_AtaB{100%{transform:rotate(360deg)}}</style><path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25"/><path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" class="spinner_ajPY"/></svg>
+        </div>
+
+        <!-- Display area for generated MAC addresses or error message-->
+        <p id="mac-addresses"></p>
+
+    </section>
+
+    <script>
+        // Function to generate MAC addresses
+        async function generateMAC() {
+
+            const cid = document.getElementById('cid-input').value;
+            document.getElementById('loading-spinner').style.display = 'inline';
+
+            // Clear previous error or result messages
+            document.getElementById('mac-addresses').innerText = null;
+
+            // Validate CID format using regex
+            if (!/^[0-9a-fA-F]{32}$/.test(cid)) {
+                document.getElementById('mac-addresses').innerText = "Invalid 128-bit CID !!"
+                document.getElementById('mac-addresses').classList.add('error');
+                document.getElementById('generate').style.display = 'none';
+                document.getElementById('try-again').style.display = 'inline';
+                document.getElementById('loading-spinner').style.display = 'none';
+                return;
+            }
+
+            try {
+            // Fetch MAC addresses from server
+            const response = await fetch('https://mac-address-generator.vercel.app/generate-mac', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ cid }),
+            });
+
+            const data = await response.json();
+
+            document.getElementById('mac-addresses').classList.add('result');
+            document.getElementById('mac-addresses').innerText = `Primary MAC: ${data.primary}\n\nSecondary MAC: ${data.secondary}`;
+            document.getElementById('generate').style.display = 'none';
+            document.getElementById('try-again').style.display = 'inline';
+            document.getElementById('loading-spinner').style.display = 'none';
+        } catch (error) {
+            document.getElementById('loading-spinner').style.display = 'none';
+            document.getElementById('mac-addresses').innerText = 'Error generating MAC addresses!';
+        } 
+        }
+
+        // Function to reload the page (Try Again)
+        const tryAgain = () => location.reload();
+
+    </script>
+
+</body>
+
+</html>

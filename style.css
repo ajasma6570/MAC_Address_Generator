@@ -1,0 +1,66 @@
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  width: 98%;
+  height: 400px;
+  background: linear-gradient(to right, #d637b4, #0468eb);
+  color: #fff;
+}
+
+#content {
+  width: 70%;
+  margin: auto;
+  text-align: center;
+  margin-top: 100px;
+}
+
+h1 {
+  font-size: 3.5rem;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+input {
+  padding: 15px;
+  width: 430px;
+  font-size: 1.5rem;
+  margin: 5px 0;
+  border: 2px solid rgb(255, 244, 244);
+  border-radius: 15px;
+  background-color: transparent;
+  color: #ffffff;
+}
+
+input::placeholder {
+  color: #ffffff;
+}
+
+button {
+  height: 55px;
+  padding: 10px;
+  border: none;
+  border-radius: 15px;
+  margin-left: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  background-color: #e40e79;
+  color: white;
+}
+
+#input_field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error {
+  color: rgb(253, 10, 10);
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.result {
+  color: white;
+  font-size: 2.5rem;
+}
